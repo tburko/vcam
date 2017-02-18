@@ -56,7 +56,10 @@ def render_file(source):
 
 def upload():
 	print "Uploading output..."
-	os.system('curl -F "file=@out/%s.png" -F "type=%s" http://tseres.eu/upload' % mode, mode)
+	if mode == MODE_RED or mode == MODE_BOTH:
+		os.system('curl -F "file=@out/%s.png" -F "type=%s" http://tseres.eu/upload' % MODE_RED, MODE_RED)
+	if mode == MODE_MONO or mode == MODE_BOTH:
+		os.system('curl -F "file=@out/%s.png" -F "type=%s" http://tseres.eu/upload' % MODE_MONO, MODE_MONO)
 
 
 def adjust_exposure():
@@ -76,7 +79,7 @@ def adjust_exposure():
 	camera.awb_mode = 'off'
 	camera.awb_gains = g
 
-	
+
 def ensure_output_dir_exists():
 	print "Ensure output directory exists..."
 
