@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve vcam
+After=network.target
+
+[Service]
+User=vcam
+Group=nginx
+WorkingDirectory=/home/vcam/vcam/website
+Environment="PATH=/home/vcam/vcam/website"
+ExecStart=/usr/bin/gunicorn -c /home/vcam/vcam/website/gunicorn.py.ini run:app
+
+[Install]
+WantedBy=multi-user.target

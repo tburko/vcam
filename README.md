@@ -14,6 +14,14 @@ Configuration files need to go in the following locations:
 Delete the default configuration:  
 /etc/nginx/conf.d/default.conf
 
+Copy /nginx/vcam.service to:
+/etc/systemd/system/vcam.service
+
+Start nginx:
+nginx
+Reload nginx configuration:
+nginx -s reload
+
 
 # Log locations
 Flask error log  
