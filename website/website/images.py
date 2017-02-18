@@ -6,7 +6,7 @@ from website.config import *
 import math
 import sys
 from PIL import Image, ImageMath
-from picamera.array import np
+import numpy as np
 
 
 def colorize(img):
