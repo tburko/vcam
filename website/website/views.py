@@ -41,7 +41,7 @@ def heatmap_view():
     # Calculate paths
     image_r_path    = os.path.join(app.config['UPLOAD_FOLDER'], 'image-r')
     image_mono_path = os.path.join(app.config['UPLOAD_FOLDER'], 'image-mono')
-    heatmap_path    = os.path.join(app.config['UPLOAD_FOLDER'], 'heatmap')
+    heatmap_path    = os.path.join(app.config['UPLOAD_FOLDER'], 'heatmap.png')
 
     # Generate heatmap
     heatmap(image_r_path, image_mono_path, heatmap_path)
