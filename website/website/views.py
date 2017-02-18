@@ -39,7 +39,7 @@ def index_view():
 @app.route('/heatmap', methods=['POST'])
 def heatmap_view():
     # Generate heatmap
-    heatmap('image-r', 'image-mono')
+    heatmap('image-r', 'image-mono', UPLOAD_FOLDER)
 
     # Send response
     return render_template('index.html',
