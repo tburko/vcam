@@ -36,13 +36,14 @@ def index_view():
 
 
 # Generate heatmap
-@app.route('/generate-heatmap')
+@app.route('/heatmap', methods=['POST'])
 def heatmap_view():
     # Generate heatmap
+    heatmap('image-r', 'image-mono')
 
     # Send response
     return render_template('index.html',
-                           title='Multispectral camera app homepage')
+                           title='Heatmap generated successfully')
 
 
 # Accept uploaded files
