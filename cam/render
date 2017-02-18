@@ -77,7 +77,7 @@ def adjust_exposure():
 	camera.awb_gains = g
 
 	
-def ensure_ouput_dir_exists():
+def ensure_output_dir_exists():
 	print "Ensure output directory exists..."
 
 	try:
