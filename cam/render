@@ -2,32 +2,61 @@
 
 from io import BytesIO
 from time import sleep
+
+from gpiozero import Button
 import picamera
 import picamera.array
 from picamera.array import np 
+
 from PIL import Image
 import sys
+
+
+resolution = (1296, 972)
 
 MODE_RED = 'r'
 MODE_MONO = 'mono'
 MODE_BOTH = 'both'
 
-def normalize(np_array):
-	return np.floor(np_array * (255.0/np_array.max())).astype(int)
+SHUTTER_INPUT = 15
+
+iso = None
+mode = None
+camera = None
 
 
-def capture(camera):
+def on_shutter_pressed():
 	stream = BytesIO()
 	
 	print "Capturing..."
 	camera.capture(stream, format='bmp')
-	
-	print "Building PIL Image"
-	stream.seek(0)
-	return Image.open(stream)
 
-	
-def adjust_exposure(camera, iso):
+	stream.seek(0)
+	print "Building PIL Image..."
+	source = Image.open(stream)
+
+	render_file(source)
+	upload()
+
+
+def render_file(source):
+	if mode == MODE_RED or mode == MODE_BOTH:
+		print "Writing RED"
+		r, g, b = source.split()
+		r.save('out/r.png')
+
+	if mode == MODE_MONO or mode == MODE_BOTH:
+		print "Writing MONO"
+		mono = source.convert('L')
+		mono.save('out/mono.png')
+
+
+def upload():
+	print "Uploading output..."
+	pass
+
+
+def adjust_exposure():
 	print "Adjusting exposure..."
 	camera.iso = iso
 
@@ -44,31 +73,25 @@ def adjust_exposure(camera, iso):
 	camera.awb_mode = 'off'
 	camera.awb_gains = g
 
+
 if __name__ == "__main__":
 	if len(sys.argv) != 3:
 		exit('Missing arguments: mode, iso')
 
+	# TODO validate ISO
 	iso = int(sys.argv[1])
 
 	mode = sys.argv[2]
 	if mode not in [MODE_RED, MODE_MONO, MODE_BOTH]:
 		exit('Unsupported mode: %s' % mode)
 
-
 	print "Initializing camera..."
 	with picamera.PiCamera() as camera:
-		camera.resolution = (1296, 972)
+		camera.resolution = resolution
+		adjust_exposure()
 
-		adjust_exposure(camera, iso)
+		shutter = Button(SHUTTER_INPUT)
+		shutter.when_pressed = on_shutter_pressed
 
-		source = capture(camera)
-
-		if mode == MODE_RED or mode == MODE_BOTH:
-			print "Writing RED"
-			r, g, b = source.split()
-			r.save('out/r.png')
-
-		if mode == MODE_MONO or mode == MODE_BOTH:
-			print "Writing MONO"
-			mono = source.convert('L')
-			mono.save('out/mono.png')
+		while True:
+			sleep(0.5)
