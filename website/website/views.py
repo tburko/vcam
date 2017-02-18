@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 
 from website import app
 from website.config import *
-import cam/heatmap
+from cam import heatmap
 
 
 UPLOAD_FOLDER = '/home/vcam/data'
