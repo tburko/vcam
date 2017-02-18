@@ -38,8 +38,13 @@ def index_view():
 # Generate heatmap
 @app.route('/heatmap', methods=['POST'])
 def heatmap_view():
+    # Calculate paths
+    image_r_path    = os.path.join(app.config['UPLOAD_FOLDER'], 'image-r')
+    image_mono_path = os.path.join(app.config['UPLOAD_FOLDER'], 'image-mono')
+    heatmap_path    = os.path.join(app.config['UPLOAD_FOLDER'], 'heatmap')
+
     # Generate heatmap
-    heatmap('image-r', 'image-mono', UPLOAD_FOLDER)
+    heatmap(image_r_path, image_mono_path, heatmap_path)
 
     # Send response
     return render_template('index.html',
@@ -64,5 +69,5 @@ def upload_view():
 
         # Send response
         return render_template('index.html',
-                               title='Multispectral camera app homepage')
+                               title='File uploaded correctly')
 
