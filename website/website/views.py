@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 
 from website import app
 from website.config import *
-from website import images
+from website.images import *
 
 
 UPLOAD_FOLDER = '/home/vcam/data'
