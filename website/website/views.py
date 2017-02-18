@@ -58,7 +58,7 @@ def upload_view():
     file = request.files['file']
 
     if file and allowed_file(file.filename):
-        filename = 'image'
+        filename = 'image-' + type
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
         # Send response
