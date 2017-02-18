@@ -13,7 +13,7 @@ app.secret_key = 'J^jkn!# 7dMfw10gdf788M/?GH78nE0'
 if not app.debug:
     import logging
     from logging.handlers import RotatingFileHandler
-    file_handler = RotatingFileHandler(filename='/var/log/website/flask_error.log', maxBytes=52428800, backupCount=4)
+    file_handler = RotatingFileHandler(filename='/var/log/vcam/flask_error.log', maxBytes=52428800, backupCount=4)
     file_handler.setLevel(logging.WARNING)
     app.logger.addHandler(file_handler)
 
