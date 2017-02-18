@@ -1,0 +1,74 @@
+#!/usr/bin/python
+
+from io import BytesIO
+from time import sleep
+import picamera
+import picamera.array
+from picamera.array import np 
+from PIL import Image
+import sys
+
+MODE_RED = 'r'
+MODE_MONO = 'mono'
+MODE_BOTH = 'both'
+
+def normalize(np_array):
+	return np.floor(np_array * (255.0/np_array.max())).astype(int)
+
+
+def capture(camera):
+	stream = BytesIO()
+	
+	print "Capturing..."
+	camera.capture(stream, format='bmp')
+	
+	print "Building PIL Image"
+	stream.seek(0)
+	return Image.open(stream)
+
+	
+def adjust_exposure(camera, iso):
+	print "Adjusting exposure..."
+	camera.iso = iso
+
+	print "Waiting for auto gain to kick in..."
+	# auto gain needed? check docs
+	sleep(2)
+
+	print "Analog gain: %d" % camera.analog_gain
+	#camera.analog_gain = 4
+	camera.shutter_speed = camera.exposure_speed
+	#camera.shutter_speed = 1000000
+	camera.exposure_mode = 'off'
+	g = camera.awb_gains
+	camera.awb_mode = 'off'
+	camera.awb_gains = g
+
+if __name__ == "__main__":
+	if len(sys.argv) != 3:
+		exit('Missing arguments: mode, iso')
+
+	iso = int(sys.argv[1])
+
+	mode = sys.argv[2]
+	if mode not in [MODE_RED, MODE_MONO, MODE_BOTH]:
+		exit('Unsupported mode: %s' % mode)
+
+
+	print "Initializing camera..."
+	with picamera.PiCamera() as camera:
+		camera.resolution = (1296, 972)
+
+		adjust_exposure(camera, iso)
+
+		source = capture(camera)
+
+		if mode == MODE_RED or mode == MODE_BOTH:
+			print "Writing RED"
+			r, g, b = source.split()
+			r.save('out/r.png')
+
+		if mode == MODE_MONO or mode == MODE_BOTH:
+			print "Writing MONO"
+			mono = source.convert('L')
+			mono.save('out/mono.png')

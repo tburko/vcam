@@ -1,0 +1,17 @@
+#!/usr/bin/python
+
+import sys
+from time import sleep
+from picamera import PiCamera
+
+res = (1024, 768)
+
+if len(sys.argv) > 1:
+	res = getattr(resolution,sys.argv[1])
+
+with PiCamera() as camera:
+	camera.resolution = res
+	camera.start_preview()
+
+	sleep(100000)
+
