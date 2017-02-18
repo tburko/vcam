@@ -24,7 +24,7 @@ def colorize(img):
     #return Image.fromarray(colorized,'RGB')
 
 
-def heatmap(r_path, mono_path):
+def heatmap(r_path, mono_path, path):
     print "Reading red channel from %s" % r_path
     r = Image.open(r_path)
 
@@ -33,5 +33,5 @@ def heatmap(r_path, mono_path):
 
     histogram = ImageMath.eval("convert(mono - r, 'RGB')", r=r, mono=mono)
     colorize(histogram)
-    histogram.save("out/heatmap.png")
+    histogram.save(path)
 
