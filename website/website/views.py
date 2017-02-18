@@ -48,6 +48,10 @@ def heatmap_view():
 # Accept uploaded files
 @app.route('/upload', methods=['POST'])
 def upload_view():
+    type=request.form['type']
+    if type not in ['r', 'mono']:
+        return 'Unknown type', 401
+
     # Check if the Post request has the file part
     if 'file' not in request.files:
         return redirect(request.url)
