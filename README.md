@@ -3,7 +3,7 @@ Garage48 Vegetation Camera Project
 
 
 # Start gunicorn to run web app
-gunicorn -c /home/vcam/vcam/website/gunicorn.py.ini run:app  
+/usr/bin/gunicorn -c /home/vcam/vcam/website/gunicorn.py.ini run:app &
 
 
 # Nginx web server
