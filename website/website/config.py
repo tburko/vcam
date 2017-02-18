@@ -2,7 +2,7 @@
 
 from website import app
 
-import psycopg2
+# import psycopg2
 # import redis
 
 # Secret key
