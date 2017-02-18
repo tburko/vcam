@@ -109,6 +109,7 @@ if __name__ == "__main__":
 
 		shutter = Button(SHUTTER_INPUT)
 		shutter.when_pressed = on_shutter_pressed
+		print "Push it!"
 
 		while True:
 			sleep(0.5)
